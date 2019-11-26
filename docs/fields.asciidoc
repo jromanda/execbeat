@@ -143,6 +143,12 @@ type: keyword
 
 Standard output produced by the command executed by Execbeat.
 
+[float]
+=== exec.lineOffset
+
+type: long
+
+The line offset for the output, applicable only when splitting output by line.
 
 [float]
 === exec.stderr

@@ -52,6 +52,9 @@
             "stdout": {
               "ignore_above": 1024,
               "type": "keyword"
+            },
+            "lineOffset": {
+              "type": "long"
             }
           }
         },

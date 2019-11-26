@@ -69,7 +69,7 @@ func (e *Executor) runOneTime() error {
 	now := time.Now()
 
 	if len(cmdArgs) > 0 {
-		logp.Debug("Execbeat", "Executing command: [%v] with args [%w]", cmdName, cmdArgs)
+		logp.Debug("Execbeat", "Executing command: [%v] with args [%v]", cmdName, cmdArgs)
 		cmd = exec.Command(cmdName, cmdArgs...)
 	} else {
 		logp.Debug("Execbeat", "Executing command: [%v]", cmdName)
@@ -95,23 +95,76 @@ func (e *Executor) runOneTime() error {
 
 	logp.Info("Execbeat", "Executing command: [%v]", stdout.String())
 
-	commandEvent := Exec{
-		Command:  cmdName,
-		StdOut:   stdout.String(),
-		StdErr:   stderr.String(),
-		ExitCode: exitCode,
-	}
-
-	event := ExecEvent{
-		ReadTime:     now,
-		DocumentType: e.documentType,
-		Fields:       e.config.Fields,
-		Exec:         commandEvent,
-	}
-
-	e.execbeat.client.PublishEvent(event.ToMapStr())
+	e.publishOutput(cmdName, exitCode, now, stdout.String(), stderr.String())
 
 	return nil
+}
+
+func (e *Executor) publishOutput(cmdName string, exitCode int, now time.Time, stdout string, stderr string) {
+
+	if !e.config.SplitLines {
+		// original behavior, publish a single event with both stdout + stderr
+		commandEvent := Exec{
+			Command:  cmdName,
+			StdOut:   stdout,
+			StdErr:   stderr,
+			ExitCode: exitCode,
+		}
+
+		event := ExecEvent{
+			ReadTime:     now,
+			DocumentType: e.documentType,
+			Fields:       e.config.Fields,
+			Exec:         commandEvent,
+		}
+
+		e.execbeat.client.PublishEvent(event.ToMapStr())
+
+	} else {
+		// publish separate events for stderr and each stdout line
+		if len(stderr)>0 {
+			commandEvent := Exec{
+				Command:  cmdName,
+				StdErr:   stderr,
+				ExitCode: exitCode,
+			}
+
+			event := ExecEvent{
+				ReadTime:     now,
+				DocumentType: e.documentType,
+				Fields:       e.config.Fields,
+				Exec:         commandEvent,
+			}
+
+			e.execbeat.client.PublishEvent(event.ToMapStr())
+		}
+
+		lo := 0
+		for _, s := range strings.Split(stdout, "\n") {
+
+			if len(s) > 0 {
+				commandEvent := Exec{
+					Command:    cmdName,
+					StdOut:     s,
+					LineOffset: lo,
+					ExitCode:   exitCode,
+				}
+		
+				event := ExecEvent{
+					ReadTime:     now,
+					DocumentType: e.documentType,
+					Fields:       e.config.Fields,
+					Exec:         commandEvent,
+				}
+		
+				e.execbeat.client.PublishEvent(event.ToMapStr())
+
+				lo++
+			}
+		}
+
+	}
+
 }
 
 func (e *Executor) Stop() {

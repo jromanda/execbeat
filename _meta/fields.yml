@@ -7,20 +7,30 @@
       fields:
         - name: command
           type: keyword
+          required: false
           description: >
             The command executed by Execbeat.
 
         - name: stdout
           type: keyword
+          required: false
           description: >
             Standard output produced by the command executed by Execbeat.
 
+        - name: lineOffset
+          type: long
+          required: false
+          description: >
+            The line offset for the output, applicable only when splitting output by line.
+
         - name: stderr
           type: keyword
+          required: false
           description: >
             Standard error produced by the command executed by Execbeat.
 
         - name: exitCode
           type: keyword
+          required: true
           description: >
             Exit code of the command executed by Execbeat.

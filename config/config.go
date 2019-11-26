@@ -14,6 +14,7 @@ type ExecConfig struct {
 	Schedule     string
 	Command      string
 	Args         string
+	SplitLines   bool              `config:"split_lines"`
 	DocumentType string            `config:"document_type"`
 	Fields       map[string]string `config:"fields"`
 }

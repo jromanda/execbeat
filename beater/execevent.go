@@ -13,10 +13,11 @@ type ExecEvent struct {
 }
 
 type Exec struct {
-	Command  string `json:"command,omitempty"`
-	StdOut   string `json:"stdout"`
-	StdErr   string `json:"stderr,omitempty"`
-	ExitCode int    `json:"exitCode"`
+	Command     string `json:"command,omitempty"`
+	StdOut      string `json:"stdout"`
+	LineOffset  int    `json:"lineOffset"` 
+	StdErr      string `json:"stderr,omitempty"`
+	ExitCode    int    `json:"exitCode"`
 }
 
 func (h *ExecEvent) ToMapStr() common.MapStr {
