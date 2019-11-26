@@ -4,8 +4,8 @@
 [![license](https://img.shields.io/github/license/christiangalsterer/execbeat.svg)](https://github.com/christiangalsterer/execbeat)
 [![Github All Releases](https://img.shields.io/github/downloads/christiangalsterer/execbeat/total.svg)](https://github.com/christiangalsterer/execbeat)
 
-![Elastic Beats 5.6.2](https://img.shields.io/badge/Elastic%20Beats-v5.6.2-blue.svg)
-![Golang 1.9](https://img.shields.io/badge/Golang-v1.9-blue.svg)
+![Elastic Beats 7.1.2](https://img.shields.io/badge/Elastic%20Beats-v7.1.2-blue.svg)
+![Golang 1.12.4](https://img.shields.io/badge/Golang-v1.12.4-blue.svg)
 
 # Overview
 
@@ -39,7 +39,7 @@ Where supported Execbeat can be started also using the respetive service scripts
 
 ### Requirements
 
-* [Golang](https://golang.org/dl/) 1.9
+* [Golang](https://golang.org/dl/) 1.12.4
 * [Glide](https://github.com/Masterminds/glide) >= 0.13.0
 
 ### Build
@@ -108,8 +108,8 @@ make clean
 To clone execbeat from the git repository, run the following commands:
 
 ```
-mkdir -p ${GOPATH}/github.com/christiangalsterer
-cd ${GOPATH}/github.com/christiangalsterer
+mkdir -p ${GOPATH}/src/github.com/christiangalsterer
+cd ${GOPATH}/src/github.com/christiangalsterer
 git clone https://github.com/christiangalsterer/execbeat
 ```
 
@@ -126,6 +126,11 @@ make package
 This will fetch and create all images required for the build process. The complete process to finish can take several minutes.
 
 # Releases
+
+## 3.3.0.7x (?) [Download](https://github.com/jromanda/execbeat/)
+
+Feature and Bugfix release containing the following changes:
+* Update to beats v7.1.2
 
 ## 3.3.0 (2017-10-06) [Download](https://github.com/christiangalsterer/execbeat/releases/tag/3.3.0)
 [![Github Releases (by Release)](https://img.shields.io/github/downloads/christiangalsterer/execbeat/3.3.0/total.svg)](https://github.com/christiangalsterer/execneat/releases/tag/3.3.0)
